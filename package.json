@@ -27,6 +27,6 @@
     "@koalati/dev-tool-tester": "^1.0.6"
   },
   "dependencies": {
-    "lighthouse": "^6.2.0"
+    "lighthouse": "^6.5.0"
   }
 }
