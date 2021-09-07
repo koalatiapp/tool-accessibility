@@ -43,6 +43,8 @@ class Tool {
                 'score': audit.score
             };
 
+            // @TODO: Add priority based on `audit.details.debugData.impact`
+
             if (audit.score < 1) {
                 result.recommendations = audit.description;
             }
@@ -59,7 +61,20 @@ class Tool {
                         const itemRow = [];
 
                         for (const column of audit.details.headings) {
-                            itemRow.push(this.formatSingleDetail(column, rawItem));
+                            const detailElements = this.formatSingleDetail(column, rawItem);
+
+                            if (detailElements.length > 1 && audit.details.headings.length == 1) {
+                                for (const element of detailElements) {
+                                    itemRow.push(element);
+                                }
+
+                                // Add table heading if it hasn't been added yet
+                                if (table[0].length == 1) {
+                                    table[0].push("Explanation");
+                                }
+                            } else {
+                                itemRow.push(detailElements.join('\n'));
+                            }
                         }
 
                         table.push(itemRow);
@@ -75,6 +90,12 @@ class Tool {
         return results;
     }
 
+    /**
+     * 
+     * @param {object} column 
+     * @param {object} item 
+     * @returns {string[]}
+     */
     formatSingleDetail(column, item) {
         switch (column.valueType) {
 			case 'thumbnail':
@@ -94,11 +115,11 @@ class Tool {
             }
 
             if (typeof item[column.key].explanation != 'undefined') {
-                contentLines = contentLines.concat(item[column.key].explanation.split('\n'));
+                contentLines.push('```\n' + item[column.key].explanation + '\n```');
             }
         }
 
-        return contentLines.join('\n');
+        return contentLines;
     }
 
     formatBytes(bytes) {
