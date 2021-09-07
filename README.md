@@ -1,4 +1,4 @@
-A accessibility tool for Koalati
+# An accessibility tool for Koalati
 
 This is the repository for Koalati's built-in Accessibility tool. This tool uses Google Lighthouse's `accessibility` audit category to analyze webpages and recommend changes and optimizations to help improve their accessibility.
 
