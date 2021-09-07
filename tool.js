@@ -52,7 +52,7 @@ class Tool {
                     const table = [[]];
 
                     for (const column of audit.details.headings) {
-                        table[0].push(column.label || '');
+                        table[0].push(column.text || (column.label || ''));
                     }
 
                     for (const rawItem of audit.details.items) {
