@@ -115,11 +115,18 @@ class Tool {
             }
 
             if (typeof item[column.key].explanation != 'undefined') {
-                contentLines.push('```\n' + item[column.key].explanation + '\n```');
+                contentLines.push(this.formatExplanation(item[column.key].explanation));
             }
         }
 
         return contentLines;
+    }
+
+    /**
+     * @param {string} explanation 
+     */
+    formatExplanation(explanation) {
+        return explanation.replace(/^(\s\s){1,2}/gm, '- ');
     }
 
     formatBytes(bytes) {
