@@ -1,10 +1,9 @@
-'use strict';
-
 const lighthouse = require('lighthouse');
 const { URL } = require('url');
+const { priorities } = require('@koalati/result-builder');
 
 class Tool {
-    constructor({ page, devices }) {
+    constructor({ page }) {
         this.page = page;
     }
 
@@ -43,10 +42,17 @@ class Tool {
                 'score': audit.score
             };
 
-            // @TODO: Add priority based on `audit.details.debugData.impact`
-
             if (audit.score < 1) {
-                result.recommendations = audit.description;
+                result.recommendations = [
+                    [
+                        audit.title,
+                        { 
+                            "_message": audit.id,
+                            "_group": audit.group,
+                        },
+                        this._extractResultPriority(audit)
+                    ]
+                ];
             }
 
             try {
@@ -138,6 +144,22 @@ class Tool {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
 
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    _extractResultPriority(audit) {
+        if (typeof audit.details != 'undefined' && 
+            typeof audit.details.debugData != 'undefined' &&
+            "serious" == audit.details.debugData.impact) {
+            return priorities.ISSUE;
+        }
+        
+        if (audit.weight >= 5) {
+            return priorities.ISSUE;
+        } else if (audit.weight >= 2) {
+            return priorities.ESSENTIAL;
+        }
+
+        return priorities.OPTIMIZATION;
     }
 
     sortResults() {
