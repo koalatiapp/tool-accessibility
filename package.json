@@ -1,6 +1,6 @@
 {
   "name": "@koalati/tool-accessibility",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Koalati tool that uses Google Lighthouse to check webpages for accessibility issues.",
   "main": "tool.js",
   "scripts": {
@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/koalatiapp/tool-accessibility#readme",
   "devDependencies": {
-    "@koalati/dev-tool-tester": "^2.0.3"
+    "@koalati/dev-tool-tester": "^2.1.0"
   },
   "dependencies": {
     "@koalati/result-builder": "^1.4.0",
-    "lighthouse": "^8.1.0"
+    "lighthouse": "^9.6.5"
   }
 }
